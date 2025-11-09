@@ -1,0 +1,333 @@
+/* src/theme.css - ClipBook final theme with top-center logo badge */
+
+/* Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+:root {
+  --accent-1: #6f42d6;
+  --accent-2: #9a63ff;
+  --muted: #cfcfe6;
+  --card-bg: rgba(255,255,255,0.04);
+  --card-border: rgba(255,255,255,0.12);
+  --glass-blur: 18px;
+  --radius: 20px;
+  --max-width: 1100px;
+}
+
+/* Reset basics */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+
+/* Page base */
+body {
+  margin: 0;
+  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(160,120,255,0.04), transparent 10%),
+              linear-gradient(180deg, #f6f3ff 0%, #e9f3ff 100%);
+  color: #0b1220;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Layout shell */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 28px 80px; /* extra top padding to make room for top badge */
+  background: transparent;
+  position: relative;
+  z-index: 2; /* UI above overlay */
+}
+
+/* Background image (inline from React) */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;                 /* base layer for background image */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: rgba(30,20,60,0.10);
+  filter: saturate(0.95) brightness(0.96) contrast(0.98);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Real overlay element (above bg image, below UI) */
+.overlay-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;                 /* overlay above .app-bg, below UI */
+  pointer-events: none;
+  background:
+    radial-gradient(900px 600px at 20% 25%, rgba(141,72,255,0.16), transparent 65%),
+    radial-gradient(900px 600px at 80% 70%, rgba(80,160,255,0.14), transparent 65%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+  mix-blend-mode: soft-light;
+  backdrop-filter: blur(1px);
+  transform-origin: center;
+  animation: overlayFloat 24s ease-in-out infinite alternate;
+  opacity: 1;
+}
+
+/* overlay animation */
+@keyframes overlayFloat {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  100% { transform: translate(-80px, -40px) scale(1.03); }
+}
+
+/* ---------- Top-center floating logo badge ---------- */
+.top-logo-badge {
+  position: fixed;
+  left: 50%;
+  top: 24px;
+  transform: translateX(-50%);
+  z-index: 4;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 22px;
+  padding: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 18px 60px rgba(12,12,20,0.2);
+  backdrop-filter: blur(20px) saturate(1.06);
+  -webkit-backdrop-filter: blur(20px) saturate(1.06);
+  animation: badgeFloat 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* inner ring and image */
+.top-logo-badge .top-logo-inner {
+  width: 88px;
+  height: 88px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  box-shadow: 0 8px 24px rgba(111,66,214,0.12);
+  padding: 6px;
+}
+.top-logo-badge .top-logo-inner img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+}
+
+/* floating badge animation */
+@keyframes badgeFloat {
+  0% { transform: translateX(-50%) translateY(0px) rotate(-0.6deg); }
+  50% { transform: translateX(-50%) translateY(-6px) rotate(0.6deg); }
+  100% { transform: translateX(-50%) translateY(0px) rotate(-0.6deg); }
+}
+
+/* ---- Ultra-glass theme card (center) ---- */
+.theme-card {
+  width: min(1000px, 92%);
+  max-width: 1000px;
+  border-radius: 20px;
+  padding: 28px 30px;
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  justify-content: space-between;
+  color: #0b1220;
+  position: relative;
+  z-index: 3; /* must sit above overlay */
+
+  /* ultra-glass translucent background so the photo shows through */
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.14) 0%,
+    rgba(255,255,255,0.09) 40%,
+    rgba(255,255,255,0.05) 100%
+  );
+
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.12) contrast(.98);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.12) contrast(.98);
+
+  /* subtle rim and inner highlight */
+  border: 1px solid rgba(255,255,255,0.20);
+  box-shadow:
+    0 24px 70px rgba(12,14,22,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.10);
+
+  transform: translateY(0);
+  transition: transform .36s cubic-bezier(.16,.8,.25,1), box-shadow .36s ease;
+  overflow: hidden;
+  will-change: transform;
+  animation: cardEnter 620ms cubic-bezier(.2,.9,.2,1) both;
+}
+
+.theme-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, rgba(111,66,214,0.16), rgba(154,99,255,0.12));
+  -webkit-mask:
+    linear-gradient(#000, #000) content-box,
+    linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+.theme-card::before {
+  content: "";
+  position: absolute;
+  left: -18%;
+  top: -36%;
+  width: 136%;
+  height: 120%;
+  transform: rotate(-18deg) translateY(-8%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 40%, transparent 60%);
+  filter: blur(30px);
+  opacity: 0.40;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.theme-card > * { position: relative; z-index: 4; }
+
+.theme-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 34px 90px rgba(12,14,22,0.22);
+}
+
+@keyframes cardEnter {
+  from { transform: translateY(12px) scale(.995); opacity: 0; filter: blur(1px); }
+  to   { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+}
+
+/* brand block (no logo inside card) */
+.brand-block {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  min-width: 260px;
+  flex: 0 0 260px;
+}
+
+/* smaller left spacer (we used empty box in JSX to keep layout) */
+.brand-block > div:first-child { width: 64px; height: 64px; }
+
+/* text next to (spacer) */
+.brand-title {
+  font-weight: 700;
+  font-size: 20px;
+  color: #0b1220;
+  line-height: 1;
+}
+.brand-sub { color: rgba(11,18,32,0.6); font-size: 13px; }
+
+/* sign-in area */
+.signin-area {
+  min-width: 320px;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  color: #0b1220;
+}
+
+/* headings and paragraph inside signin-area */
+.signin-area h2 { margin: 0; font-size: 20px; color: #0b1220; }
+.signin-area p { margin: 0 0 8px 0; color: rgba(11,18,32,0.72); }
+
+/* legacy simple button (not used but retained) */
+.signin-area .btn { display:inline-block; padding:10px 14px; border-radius:10px; }
+
+/* signin buttons (centered stack) */
+.signin-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.btn-google,
+.btn-microsoft {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: 320px;
+  max-width: calc(100% - 40px);
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.15s ease;
+  color: white;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+/* fixed icon container so icon won't overlap text */
+.btn-google .btn-icon,
+.btn-microsoft .btn-icon {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  object-fit: contain;
+}
+
+/* google button */
+.btn-google {
+  background: linear-gradient(135deg, #4285F4, #6aa0ff);
+}
+.btn-google .btn-icon { display:block; width:20px; height:20px; }
+
+/* ms button */
+.btn-microsoft {
+  background: linear-gradient(135deg, #5e37c9, #8e54ff);
+}
+.btn-microsoft .btn-icon {
+  background: #fff;
+  border-radius: 4px;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+/* hover */
+.btn-google:hover,
+.btn-microsoft:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.16);
+}
+
+/* Tip text */
+.signin-tip {
+  color: rgba(11,18,32,0.6);
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* responsive */
+@media (max-width:880px) {
+  .app-shell { padding-top: 36px; padding-bottom: 60px; }
+  .top-logo-badge { width: 96px; height: 96px; top: 18px; }
+  .top-logo-badge .top-logo-inner { width: 72px; height: 72px; }
+  .theme-card { padding: 18px; border-radius: 16px; }
+  .btn-google, .btn-microsoft { width: calc(100% - 48px); }
+  .brand-block { flex: 0 0 auto; min-width: auto; justify-content: center; width:100%; gap:10px; }
+  .signin-area { width:100%; align-items:center; text-align:center; }
+}
