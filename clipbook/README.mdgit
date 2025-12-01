@@ -1,0 +1,2 @@
+"# clipbook"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/gottipati4594-sketch/clipbook.gitgit push -u origin main
+"# clipbook"  initgit add README.mdgit commit -m "first commit"git branch -M maingit remote add origin https://github.com/gottipati4594-sketch/clipbook.gitgit push -u origin main
