@@ -6,6 +6,10 @@ import Login from "./Login";
 import Dashboard from "./Dashboard";
 
 export default function App() {
+
+  // 🔍 Debug line: Checks whether .env variables are loaded correctly by Vite
+  console.log("HF_KEY (Vite) =", import.meta.env.VITE_HF_KEY);
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +21,9 @@ export default function App() {
     return unsub;
   }, []);
 
-  if (loading) return <div style={{ padding: 20 }}>Loading…</div>;
+  if (loading) {
+    return <div style={{ padding: 20 }}>Loading…</div>;
+  }
 
   return user ? <Dashboard /> : <Login setUser={setUser} />;
 }
