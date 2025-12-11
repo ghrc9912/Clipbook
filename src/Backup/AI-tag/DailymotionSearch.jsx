@@ -1,6 +1,5 @@
 // src/DailymotionSearch.jsx
-// Dailymotion search + AI auto-tagging (AI tags ON by default, checkbox hidden).
-// Auto-tags limited to 3.
+// Dailymotion search + AI auto-tagging (toggleable). Based on original file. :contentReference[oaicite:6]{index=6}
 
 import { useState } from "react";
 import { db, auth } from "./firebase";
@@ -9,9 +8,7 @@ import { addDoc, collection } from "firebase/firestore";
 // short helper to truncate text
 const truncate = (s, n = 1500) => (typeof s === "string" && s.length > n ? s.slice(0, n - 1) + "…" : s || "");
 
-const normalizeTag = (t) => (t || "").toString().trim().toLowerCase();
-
-// rule-based fallback tag mapping (kept) — now returns up to 3
+// small rule-based tag mapping (kept as fallback)
 const generateAutoTags = (title, desc) => {
   const text = `${title || ""} ${desc || ""}`.toLowerCase();
   const map = {
@@ -22,25 +19,22 @@ const generateAutoTags = (title, desc) => {
     lecture: "lecture",
     python: "python",
     react: "web-dev",
-    gaming: "gaming",
-    nature: "nature",
   };
   const tags = new Set();
   for (const [kw, tag] of Object.entries(map)) {
     if (text.includes(kw)) tags.add(tag);
-    if (tags.size >= 3) break;
   }
   if (tags.size === 0) tags.add("uncategorized");
-  return Array.from(tags).slice(0, 3).map(normalizeTag);
+  return Array.from(tags);
 };
 
-// AI tagger (calls HF/Groq proxy) — limit to 3
+// AI tagger (calls HF/Groq proxy)
 async function generateAITags(title, desc) {
   const HF_PROXY_ENDPOINT = "https://api-4wepxhinxa-uc.a.run.app/hf-chat";
   const shortTitle = truncate(title, 800);
   const shortDesc = truncate(desc, 1800);
 
-  const prompt = `You are a concise tag generator. Given the video title and description, return a JSON object with a single field "tags" containing up to 3 short, single-word or short-phrase tags suitable as categories. Do not include explanation.
+  const prompt = `You are a concise tag generator. Given the video title and description, return a JSON object with a single field "tags" containing up to 8 short, single-word or short-phrase tags suitable as categories. Do not include explanation.
 
 Title: ${shortTitle}
 
@@ -73,11 +67,11 @@ Return example:
     const lastBrace = txt.lastIndexOf("}");
     const jsonText = firstBrace !== -1 && lastBrace !== -1 ? txt.slice(firstBrace, lastBrace + 1) : txt;
     const parsed = JSON.parse(jsonText);
-    if (Array.isArray(parsed.tags)) return parsed.tags.map(normalizeTag).filter(Boolean).slice(0, 3);
-    if (typeof parsed.tags === "string") return parsed.tags.split(",").map((t) => normalizeTag(t)).filter(Boolean).slice(0, 3);
+    if (Array.isArray(parsed.tags)) return parsed.tags.map((t) => String(t).trim()).filter(Boolean);
+    if (typeof parsed.tags === "string") return parsed.tags.split(",").map((t) => t.trim()).filter(Boolean);
   } catch (e) {
     const commaSplit = txt.split(/[,\n]/).map((t) => t.trim()).filter(Boolean);
-    const candidate = commaSplit.filter((x) => x.length <= 30).slice(0, 3).map(normalizeTag);
+    const candidate = commaSplit.filter((x) => x.length <= 30).slice(0, 8);
     if (candidate.length) return candidate;
     throw new Error("AI response could not be parsed.");
   }
@@ -88,7 +82,7 @@ export default function DailymotionSearch({ onSaved }) {
   const [q, setQ] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [useAITags] = useState(true); // hidden toggle, default ON
+  const [useAITags, setUseAITags] = useState(true);
 
   const search = async () => {
     if (!q) return;
@@ -126,9 +120,6 @@ export default function DailymotionSearch({ onSaved }) {
         tags = generateAutoTags(title, desc);
       }
 
-      // finalize: normalize & limit 3
-      tags = Array.from(new Set(tags.map(normalizeTag))).filter(Boolean).slice(0, 3);
-
       await addDoc(collection(db, "users", auth.currentUser.uid, "clips"), {
         originalUrl: item.url,
         videoSite: "dailymotion",
@@ -137,7 +128,7 @@ export default function DailymotionSearch({ onSaved }) {
         watchUrl: item.url,
         customTitle: item.title,
         description: item.description,
-        playlistIds: [],
+        playlistId: null,
         tags,
         autoTagsGenerated: !!useAITags,
         createdAt: Date.now(),
@@ -164,6 +155,13 @@ export default function DailymotionSearch({ onSaved }) {
         <button onClick={search} disabled={loading}>
           {loading ? "Searching…" : "Search Dailymotion"}
         </button>
+      </div>
+
+      <div style={{ marginTop: 8, display: "flex", alignItems: "center", gap: 10 }}>
+        <label style={{ fontSize: 13 }}>
+          <input type="checkbox" checked={useAITags} onChange={(e) => setUseAITags(e.target.checked)} /> Use AI tags
+        </label>
+        <small style={{ color: "#666" }}>When enabled, ClipBook will ask the AI to suggest up to 8 tags.</small>
       </div>
 
       <div

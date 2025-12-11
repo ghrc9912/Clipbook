@@ -1,0 +1,8 @@
+{
+  "name": "functions-root-placeholder",
+  "private": true,
+  "engines": {
+    "node": "20"
+  },
+  "description": "Placeholder package.json so firebase runtime detection works."
+}

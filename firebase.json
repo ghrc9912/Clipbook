@@ -1,4 +1,10 @@
 {
+  "functions": [
+    {
+      "source": "functions/clipbot",
+      "codebase": "clipbot"
+    }
+  ],
   "hosting": {
     "public": "dist",
     "ignore": [
