@@ -22,6 +22,8 @@ import {
 import YouTubeSearch from "./YouTubeSearch";
 import DailymotionSearch from "./DailymotionSearch";
 import ChatAI_HF from "./ChatAI_HF";
+import "./dashboard-theme.css";
+
 
 // helpers
 const truncate = (s, n = 1500) => (typeof s === "string" && s.length > n ? s.slice(0, n - 1) + "…" : s || "");

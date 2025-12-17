@@ -178,9 +178,13 @@ export default function YouTubeSearch({ onSaved }) {
           placeholder="Search YouTube (example: linear algebra lecture)"
           style={{ flex: 1, padding: 8 }}
         />
-        <button onClick={search} disabled={loading} style={{ padding: "8px 12px" }}>
-          {loading ? "Searching…" : "Search YouTube"}
+        <button>
+          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <img src="/yt-icon.png" width="18" alt="" />
+          Search YouTube
+          </span>
         </button>
+
       </div>
 
       <div
