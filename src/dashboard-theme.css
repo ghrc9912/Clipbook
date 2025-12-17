@@ -1,0 +1,183 @@
+/* ===== ClipBook Dashboard Visual Theme (SAFE + GLASS) ===== */
+
+/* =========================
+   BACKGROUND
+========================= */
+
+html {
+  background-image: url("/bg-dashboard.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* soft frosted overlay */
+body {
+  background: rgba(248, 249, 252, 0.88);
+}
+
+/* =========================
+   GLASS CLIP CARDS
+========================= */
+
+div[style*="width: 360"][style*="position: relative"] {
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  box-shadow:
+    0 20px 40px rgba(16, 24, 40, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.4) !important;
+}
+
+/* =========================
+   GLASS SIDEBAR
+========================= */
+
+aside {
+  background: rgba(248, 249, 252, 0.6) !important;
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border-radius: 16px !important;
+  border: 1px solid rgba(255,255,255,0.4) !important;
+  box-shadow: 0 18px 40px rgba(16,24,40,0.12);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+  transition: all 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Primary buttons */
+button[style*="Save"],
+button[style*="Create"],
+button[style*="Search"] {
+  background: linear-gradient(135deg, #6f42d6, #1a73e8) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  font-weight: 600;
+}
+
+/* Logout */
+button[style*="Logout"] {
+  background: linear-gradient(135deg, #6f42d6, #8e54ff) !important;
+  color: white !important;
+  border-radius: 10px !important;
+}
+
+/* =========================
+   THREE-DOT MENU
+========================= */
+
+button[aria-expanded] {
+  border-radius: 8px !important;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.2) !important;
+}
+
+/* =========================
+   GLASS POPOVERS
+========================= */
+
+div[id^="clip-popover"] {
+  background: rgba(255,255,255,0.65) !important;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 14px;
+}
+
+/* =========================
+   TAG PILLS
+========================= */
+
+span[style*="background"] {
+  border-radius: 999px !important;
+  padding: 4px 12px !important;
+  font-size: 11px !important;
+  font-weight: 500;
+}
+
+/* =========================
+   GLASS INPUTS
+========================= */
+
+input,
+textarea {
+  background: rgba(255,255,255,0.7) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 10px !important;
+  border: 1px solid rgba(255,255,255,0.45) !important;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #6f42d6 !important;
+  box-shadow: 0 0 0 2px rgba(111,66,214,0.25);
+}
+
+/* =========================
+   AI FLOATING BUTTON
+========================= */
+
+button[aria-label*="AI"],
+button[title*="AI"] {
+  box-shadow: 0 14px 36px rgba(111,66,214,0.45) !important;
+  backdrop-filter: blur(6px);
+}
+/* =========================
+   SEARCH BUTTON UPGRADE
+========================= */
+
+/* YouTube button */
+button:has(:contains("Search YouTube")),
+button[style*="Search YouTube"] {
+  background: linear-gradient(135deg, #ff0000, #cc0000) !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+  padding: 10px 16px !important;
+  box-shadow: 0 8px 20px rgba(255, 0, 0, 0.25);
+}
+
+/* Dailymotion button */
+button:has(:contains("Search Dailymotion")),
+button[style*="Search Dailymotion"] {
+  background: linear-gradient(135deg, #0057ff, #003bb3) !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+  padding: 10px 16px !important;
+  box-shadow: 0 8px 20px rgba(0, 87, 255, 0.25);
+}
+
+/* Hover effect */
+button:hover {
+  transform: translateY(-2px) scale(1.01);
+}
+/* Branded search buttons */
+button {
+  border-radius: 12px !important;
+  font-weight: 600;
+  padding: 10px 18px !important;
+}
+
+/* YouTube */
+button img[src*="yt"] {
+  filter: drop-shadow(0 2px 6px rgba(255,0,0,0.4));
+}
+
+/* Dailymotion */
+button img[src*="dm"] {
+  filter: drop-shadow(0 2px 6px rgba(0,87,255,0.4));
+}

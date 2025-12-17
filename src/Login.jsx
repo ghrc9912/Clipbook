@@ -97,7 +97,7 @@ export default function Login() {
           <div style={{ maxWidth: 520 }}>
             <h2 style={{ margin: 0 }}>Sign in to ClipBook</h2>
             <p style={{ marginTop: 8, marginBottom: 8, color: "rgba(11,18,32,0.72)" }}>
-              Sign in with Google or Microsoft to save and manage your clips.
+               Sign in with Google or Microsoft to save and manage your clips.
             </p>
           </div>
 

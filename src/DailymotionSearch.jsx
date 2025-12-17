@@ -161,9 +161,13 @@ export default function DailymotionSearch({ onSaved }) {
           placeholder="Search Dailymotion"
           style={{ flex: 1, padding: 8 }}
         />
-        <button onClick={search} disabled={loading}>
-          {loading ? "Searching…" : "Search Dailymotion"}
+        <button>
+          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <img src="/dm-icon.png" width="18" alt="" />
+          Search Dailymotion
+          </span>
         </button>
+
       </div>
 
       <div
